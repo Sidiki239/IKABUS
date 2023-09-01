@@ -1,0 +1,188 @@
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import './Booking.css';
+import swal from 'sweetalert';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Axios from 'axios';
+import Menu from '@mui/material/Menu';
+import {  useTheme } from '@mui/material/styles';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+
+export function Booking() {
+  const [trajets, setTrajets] = useState([]);
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrajet, setSelectedTrajet] = useState(null);
+  useEffect(() => {
+    const fetchTrajets = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/read');
+        const data = await response.json();
+        setTrajets(data);
+      } catch (error) {
+        console.log('Erreur lors de la récupération des trajets:', error);
+      }
+    };
+    fetchTrajets();
+  }, []);
+
+  const handleEditClick = (trajet) => {
+    setSelectedTrajet(trajet);
+    setShowModal(true);
+    setAnchorEl(null);
+  };
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedTrajet(null);
+  };
+  const [newtrajet, setNewTrajet] = useState({
+    date1m: '',
+    departurem: '',
+    arrivalm: '',
+    hour_departurem: '',
+    hour_arrivalm: '',
+    pricem: '',
+    placesm: '',
+  });
+  useEffect(() => {
+    if (selectedTrajet) {
+      setNewTrajet({
+        date1m: selectedTrajet.date1,
+        departurem: selectedTrajet.departure,
+        arrivalm: selectedTrajet.arrival,
+        hour_departurem: selectedTrajet.hour_departure,
+        hour_arrivalm: selectedTrajet.hour_arrival,
+        pricem: selectedTrajet.price,
+        placesm: selectedTrajet.places,
+      });
+    }
+  }, [selectedTrajet]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="table1">
+      <TableContainer  component={Paper}>
+        <Table  sx={{ maxWidth: "100%" }} aria-label="customized table">
+          <TableHead>
+            <TableRow   >
+              <StyledTableCell align="left">Dép.</StyledTableCell>
+              <StyledTableCell align="left">Arr.</StyledTableCell>
+              <StyledTableCell align="left">Prix/Pls..</StyledTableCell>
+              <StyledTableCell align="left">Date</StyledTableCell>
+              <StyledTableCell  align="center">Plus</StyledTableCell> </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((trajet , key) => {
+              const {
+                _id,
+               date1,
+                departure,
+                arrival,
+                hour_departure,
+                hour_arrival,
+                price,
+                places,
+              } = trajet;
+              // const isSelected = selectedItemIds.includes(_id);
+              return (
+                <StyledTableRow
+                key={_id}
+                hover >
+                  <StyledTableCell style={{background:"none", width:"50%" , textAlign:"left"}} component="th" scope="row" align="center">
+                   {departure}   <br/><b style={{ color:"red"}}>{hour_departure}</b>  
+                </StyledTableCell>
+                  <StyledTableCell  align="left">
+                  <div>
+      <Button style={{ background: 'transparent', fontSize: '18px' ,border:"none" }}
+        id="demo-positioned-button"
+        aria-controls={open ? 'demo-positioned-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      ><MoreVertRoundedIcon style={{color: 'black', fontSize: '18px'}} />
+      </Button>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+      <IconButton onClick={() =>  handleEditClick(trajet)}>
+      <EditIcon  />
+    </IconButton>
+      </Menu>
+    </div>
+  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Body >
+          {selectedTrajet && (
+            <Form >
+            <Form.Group className="mb-3">
+              <Form.Label>Départ</Form.Label>
+              <Form.Control
+                type="text"
+                name="departurem"
+                value={newtrajet.departurem}
+                defaultValue={selectedTrajet.departure}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    departurem: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Arrivée</Form.Label>
+              <Form.Control
+                type="text"
+                name="arrivalm"
+                value={newtrajet.arrivalm}
+                defaultValue={selectedTrajet.arrival}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    arrivalm: e.target.value,  })}
+              />
+            </Form.Group>
+          </Form>
+        )}
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
+}
+export default Booking

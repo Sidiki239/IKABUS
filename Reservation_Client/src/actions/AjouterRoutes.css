@@ -1,0 +1,72 @@
+
+body{
+background-image: url("../images/bus.png");
+
+}
+.form {
+
+padding:auto;
+margin-top: 5%;
+border-radius: 12px;
+
+
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content:space-around;
+    margin-top: 40px;
+    padding-block: 12px;
+  }
+  
+
+
+.form h3{
+margin: 15px;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+@media (max-width:500px){
+    .form{
+        width: 80%;
+        margin-left: 10%;
+        margin-right:10% ;
+    }
+  }
+  @media (min-width:501px){
+    .form{
+        width: 70%;
+        margin-left: 15%;
+        margin-right:15% ;
+    }
+  }
+  @media (min-width:801px){
+    .form{
+        width: 75%;
+        margin-left: 12.5%;
+        margin-right:12.5% ;
+    }
+  }
+  @media (min-width:1001px){
+    .form{
+        width: 85%;
+        margin-left: 7.5%;
+        margin-right:7.5% ;
+    }
+  }
+  @media (min-width:1201px){
+    .form{
+        width: 55%;
+        margin-left: 22.5%;
+        margin-right:22.5% ;
+    }
+  }
+  
+  

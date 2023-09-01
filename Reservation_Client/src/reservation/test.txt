@@ -1,0 +1,2430 @@
+import React, { useState, useEffect } from 'react';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import ReactDOM from 'react-dom';
+import App from '../App';
+
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import './Reserver.css';
+import { TypeAnimation } from 'react-type-animation';
+
+import PeopleIcon from '@mui/icons-material/People';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import logo from '../images/logo_final.png';
+
+const Reserver = () => {
+  const [departures, setDepartures] = useState([]);
+  const [arrivals, setArrivals] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseDepartures = await fetch('http://localhost:3002/departures');
+        const departures = await responseDepartures.json();
+        setDepartures(departures);
+
+        const responseArrivals = await fetch('http://localhost:3002/arrivals');
+        const arrivals = await responseArrivals.json();
+        setArrivals(arrivals);
+      } catch (error) {
+        console.error('Une erreur s\'est produite lors de la récupération des données', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const navigate = useNavigate();
+  const handleSearch = () => {};
+
+  return (
+    <div>
+      <div class="center">
+        <img src={logo} alt='logo' />
+        <form method='post'>
+          <div className='txt_field' style={{ border: '0.7px solid black', borderRadius: "7px" }}>
+         
+          <Typeahead
+          id="basic-example"
+          // onChange={setSelected}
+           options={departures}
+          
+           //selected={selected}
+           className="custom-typeahead"
+              placeholder="Votre départ"
+              highlightOnlyResult={true}
+              renderMenuItemChildren={(option, { text }) => (
+                <div>
+                  <LocationOnIcon style={{ marginRight: '5px', color: 'black' }} />
+                  <span>{text}</span>
+                </div>
+              )}
+            />
+          </div>
+          <div className='txt_field' style={{ border: '0.7px solid black', borderRadius: "7px" }}>
+            <Typeahead
+              id="basic-example"
+              options={arrivals}
+              placeholder="Votre arrivée"
+              renderMenuItemChildren={(option, { text }) => (
+                <>
+                  <LocationOnIcon style={{ marginRight: '3px'  }} />
+                  <span style ={{  color :'black'}}>{text}</span>
+                </>
+              )}
+            />
+          </div>
+          <div class="txt_field" style={{ border: '0.7px solid black', borderRadius: "7px" }}>
+            <input type="date" required />
+            <span></span>
+            <label></label>
+          </div>
+          <br />
+          <Button className='submit' type="submit" onClick={handleSearch}>
+            RECHERCHER <SearchIcon />
+          </Button>
+          <div class="signup_link">
+            <a href='../'>RETOUR</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Reserver;
+ /<div// className="txt_field" style={{ border: '0.7px solid black', borderRadius: '7px' }}>
+          //   <TextField
+          //     type="date"
+          //     name="date1"
+          //     value={post.date1}
+          //     required
+          //     onChange={( // event) => // handleChange({ target: { name: 'date1', value: event.target.value } })}
+          //     style={{ width: '100%' }}
+          //   />
+          //   <span></span>
+          //   <label></label>
+          // </div>
+
+
+          import React, { useState, useEffect } from 'react';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import ReactDOM from 'react-dom';
+import App from '../App';
+import swal from 'sweetalert';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import './Reserver.css';
+import { TypeAnimation } from 'react-type-animation';
+import axios from 'axios';
+
+import PeopleIcon from '@mui/icons-material/People';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import logo from '../images/logo_final.png';
+
+const Reserver = () => {
+  const [departures, setDepartures] = useState([]);
+  const [arrivals, setArrivals] = useState([]);
+  //const currentDate = new Date().toISOString().split("T")[0];
+
+  const [post, setPost] = useState({
+    departure: '',
+    arrival: '',
+   // date1: currentDate,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseDepartures = await fetch('http://localhost:3002/departures');
+        const departures = await responseDepartures.json();
+        setDepartures(departures);
+
+        const responseArrivals = await fetch('http://localhost:3002/arrivals');
+        const arrivals = await responseArrivals.json();
+        setArrivals(arrivals);
+      } catch (error) {
+        console.error('Une erreur s\'est produite lors de la récupération des données', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setPost((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    // Vérifier que tous les champs sont remplis
+    const { departure, arrival } = post;
+    if (!departure || !arrival ) {
+      swal('Erreur', 'Veuillez remplir tous les champs', 'error');
+      return;
+    } else {
+      const newSearch = {
+        departure: post.departure,
+        arrival: post.arrival,
+       // date1 : post.date1
+      };
+      
+      axios.post('http://localhost:3002/search', newSearch)
+      .then((res) => {
+        console.log(res);
+        swal('Parfait!', 'Nouveau trajet ajouté !!', 'success').then(() => {
+          // Rediriger vers une autre page ou une autre route ici
+          // Par exemple, pour rediriger vers la page d'accueil, vous pouvez utiliser :
+        //  window.location.href = '../Administration/Admin';
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        swal('Erreur', 'Une erreur est survenue lors de l\'ajout du trajet', 'error');
+      });
+  
+      // swal('GOOD', 'Parfait vous avez cliqué', 'success');
+    }
+  };
+
+  return (
+    <div>
+      <div className="center">
+        <img src={logo} alt="logo" />
+        <form>
+          <div className="txt_field" style={{ border: '0.7px solid black', borderRadius: '7px' }}>
+            <Typeahead
+              id="basic-example"
+              options={departures}
+              name='departure'
+              value={post.departure}
+              placeholder="Votre départ"
+              className="custom-typeahead"
+              onChange={(selected) => handleChange({ target: { name: 'departure', value: selected[0] || '' } })}
+              highlightOnlyResult={true}
+            />
+          </div>
+          <div className="txt_field" style={{ border: '0.7px solid black', borderRadius: '7px' }}>
+            <Typeahead
+              id="basic-example"
+              options={arrivals}
+              name='arrival'
+              value={post.arrival}
+              onChange={(selected) => handleChange({ target: { name: 'arrival', value: selected[0] || '' } })}
+              placeholder="Votre arrivée"
+            />
+          </div>
+            
+          <br/>
+          <Button className="submit" type="submit" onClick={handleSearch}>
+            RECHERCHER <SearchIcon />
+          </Button>
+          <div className="signup_link">
+            <a href="../">RETOUR</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Reserver;
+
+@media(max-width:500px){
+    .courses-container{
+    width: 95%;
+    word-break:break-word;
+    margin:auto;
+    padding: 4px;
+    }
+    .course {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+    display: flex;
+    margin-top: 5px;
+    border:1px solid black;
+    overflow: hidden;
+    width: auto;
+    word-break:break-word;
+    }
+    .course h6 {
+    opacity: 1;
+    margin: 0;
+    font-size:11px;
+    color: black;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    }
+    .course h2 {
+    letter-spacing: 1px;
+    margin: 12px 0;
+    font-size:1.2rem;
+    }
+    .course h5{
+    color : red;
+    font-size:7px;
+    }
+    .course-preview {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    color: #fff;
+    padding: 5px;
+    word-break:break-word;
+    width: 25%;
+    word-break:break-word;
+    }
+    .course-preview a {
+    color: lavender;
+    display: inline-block;
+    font-size: 10px;
+    text-align:center;
+    margin-top: 10px;
+    text-decoration: none;
+    }
+    .course-info {
+    padding: 5px;
+    position: relative;
+    width: 75%;
+    word-break:break-word;
+    }
+    .progress-container {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: 100px;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 12px;
+    opacity: 1;
+    letter-spacing: 1.4px;
+    color:red;
+    }
+    .button1 {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    border: 0;
+    border-radius: 50px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 9px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well-sm{
+    width:95%;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well-sm p{ font-size: 13px;}}
+    @media(min-width:500px){
+    .courses-container{
+    width: 90%;
+    word-break:break-word;
+    margin: auto;
+    padding-left: auto;
+    padding: 5px;
+    }
+    .course {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+    display: flex;
+    margin-top: 5px;
+    border:1px solid black;
+    overflow: hidden;
+    width: auto;
+    word-break:break-word;
+    }
+    .course h6 {
+    opacity: 1;
+    margin: 0;
+    font-size:12px;
+    color: black;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    }
+    .course h2 {
+    letter-spacing: 1px;
+    margin: 12px 0;
+    font-size:1.2rem;
+    }
+    .course h5{
+    color : red;
+    font-size:7px;}
+    .course-preview {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    color: #fff;
+    padding: 5px;
+    word-break:break-word;
+    width: 25%;
+    word-break:break-word;}
+    .course-preview a {
+    color: lavender;
+    display: inline-block;
+    font-size: 12px;
+    text-align:center;
+    margin-top: 10px;
+    text-decoration: none;}
+    .course-info {
+    padding: 5px;
+    position: relative;
+    width: 75%;
+    word-break:break-word;}
+    .progress-container {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: 100px;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 12px;
+    opacity: 1;
+    letter-spacing: 1.4px;
+    color:red;}
+    .button1 {
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    border: 0;
+    border-radius: 50px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 9px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well-sm{
+    width:95%;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well-sm p{font-size: 13px;}}
+    @media(min-width:750.1px){
+    body
+    {max-width: 100%;}
+    .courses-container{
+    width: 80%;
+    word-break:break-word;
+    margin: auto;
+    padding-left: auto;
+    padding: 6px;
+    }
+    .course {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+    display: flex;
+    margin-top: 5px;
+    border:1px solid black;
+    overflow: hidden;
+    width: auto;
+    word-break:break-word; }
+    .course h6 {
+    opacity: 1;
+    margin: 0;
+    font-size:16px;
+    color: black;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    }
+    .course h2 {
+    letter-spacing: 1px;
+    margin: 12px 0;
+    margin-left: 5px;
+    font-size:1.6rem;
+    }
+    .course h5{
+    color : red;
+    font-size:10px;
+    }
+    .course-preview {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    color: #fff;
+    padding: 7px;
+    word-break:break-word;
+    width: 25%;
+    word-break:break-word;
+    }
+    .course-preview a {
+    color: lavender;
+    display: inline-block;
+    font-size: 16px;
+    text-align:left;
+    margin-top: 10px;
+    text-decoration: none;
+    }
+    .course-info {
+    padding: 7px;
+    position: relative;
+    width: 75%;
+    word-break:break-word;
+    }
+    .progress-container {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: 100px;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 16px;
+    opacity: 2;
+    letter-spacing: 1px;
+    color:red;
+    }
+    .button1 {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    border: 0;
+    border-radius: 50px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 16px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well-sm{
+    width:95%;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well-sm p{ font-size: 16px;}}
+    @media(min-width:990px){
+    body
+    { max-width: 100%; }
+    .courses-container{
+    width: 70%;
+    word-break:break-word;
+    margin: auto;
+    padding-left: auto;
+    padding: 6px;
+    }
+    .course {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+    display: flex;
+    margin-top: 5px;
+    border:1px solid black;
+    overflow: hidden;
+    width: auto;
+    word-break:break-word;
+    height: 120px;
+    }
+    .course h6 {
+    opacity: 1;
+    margin: 0;
+    font-size:19px;
+    color: black;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    }
+    .course h2 {
+    letter-spacing: 1px;
+    margin: 12px 0;
+    margin-left: 5px;
+    font-size:1.8rem;
+    }
+    .course h5{
+    color : red;
+    font-size:13px;
+    }
+    .course-preview {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    color: #fff;
+    padding: 7px;
+    word-break:break-word;
+    width: 25%;
+    word-break:break-word;
+    }
+    .course-preview a {
+    color: lavender;
+    display: inline-block;
+    font-size: 19px;
+    text-align:left;
+    margin-top: 10px;
+    text-decoration: none;
+    }
+    .course-info {
+    padding: 7px;
+    position: relative;
+    width: 75%;
+    word-break:break-word;
+    }
+    .progress-container {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: auto;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 19px;
+    opacity: 2;
+    letter-spacing: 1px;
+    color:red;
+    }
+    .button1 {
+    
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    border: 0;
+    border-radius: 50px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 19px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well-sm{
+    width:95%;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well-sm p{font-size: 20px;}}
+    @media(min-width:1200px){
+    body
+    {max-width: 100%; }
+    .courses-container{
+    width: 75%;
+    word-break:break-word;
+    margin: auto;
+    
+    padding-left: auto;
+    padding: 7px;
+    }
+    .course {
+    background-color: white;
+    border-radius: 13px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    
+    display: flex;
+    margin-top: 7px;
+    
+    overflow: hidden;
+    width: auto;
+    word-break:break-word;
+    height: auto;
+    }
+    .course h6 {
+    opacity: 1;
+    margin: 0;
+    font-size:22px;
+    color:black;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    }
+    .course h2 {
+    letter-spacing: 1px;
+    margin: 12px 0;
+    margin-left: 5px;
+    font-size:2rem;
+    }
+    .course h5{
+    color : red;
+    font-size:16px;
+    }
+    .course-preview {
+    /*background-color: #2A265F;*/
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    color: white;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    
+    padding: 7px;
+    width: 25%;
+    word-break:break-word;
+    }
+    .course-preview a {
+    color: lavender;
+    display: inline-block;
+    font-size: 22px;
+    text-align:left;
+    margin-top: 10px;
+    color: white;
+    text-decoration: none;
+    }
+    .course-info {
+    padding: 7px;
+    position: relative;
+    width: 75%;
+    word-break:break-word;
+    }
+    .progress-container {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: auto;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 22px;
+    opacity: 2;
+    letter-spacing: 1px;
+    color:red;
+    }
+    .button1 {
+    background: rgb(122,31,31);
+    background: linear-gradient(0deg, rgba(122,31,31,1) 0%, rgba(233,125,10,1) 5%, rgba(220,197,25,1) 100%);
+    border: 0;
+    border-radius: 30px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 19px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well-sm{
+    width:95%;margin-left:2.5%; margin-right:2.5%;border-radius:12px;margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well-sm p{ font-size: 24px;}}
+    nav {
+    float: right;}
+    nav ul {
+    text-align: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;}
+    nav ul li {
+    float: left;
+    position: relative;}
+    nav ul li a {
+    display: block;
+    padding: 0 20px;
+    line-height: 70px;
+    background: #ffffff;
+    color: #463f3f;
+    text-decoration: none;}
+    nav ul li a:hover {
+    background: #f2f2f2;
+    color: #fb5958;}
+    nav ul li a:not(:only-child):after {
+    padding-left: 4px;
+    content: ' ▾';}
+    nav ul li ul li {
+    min-width: 190px;}
+    nav ul li ul li a {
+    padding: 15px;
+    line-height: 20px;}
+    .nav-dropdown {
+    position: absolute;
+    z-index: 1;
+    /* Guarantees that the dropdown will display on top of any content. */
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    display: none;}
+    .nav-mobile {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #fff;
+    height: 70px;
+    width: 70px;}
+    @media only screen and (max-width: 800px) {
+    .nav-mobile {
+    display: block;
+    }
+    
+    nav {
+    width: 100%;
+    padding: 70px 0 15px;
+    }
+    nav ul {
+    display: none;
+    }
+    nav ul li {
+    float: none;
+    }
+    nav ul li a {
+    padding: 15px;
+    line-height: 20px;
+    }
+    nav ul li ul li a {
+    padding-left: 30px;
+    }
+    .brand img {
+    width:160px; height:70px; 
+    margin-top: -15px;
+    }}
+    #nav-toggle {
+    position: absolute;
+    left: 18px;
+    top: 22px;
+    cursor: pointer;
+    padding: 10px 35px 16px 0px;}
+    #nav-toggle span,
+    #nav-toggle span:before,
+    #nav-toggle span:after {
+    cursor: pointer;
+    border-radius: 1px;
+    height: 5px;
+    width: 35px;
+    background: #463f3f;
+    position: absolute;
+    display: block;
+    content: '';
+    transition: all 300ms ease-in-out;}
+    #nav-toggle span:before {
+    top: -10px;}
+    #nav-toggle span:after {
+    bottom: -10px;}
+    #nav-toggle.active span {
+    background-color: transparent;}
+    #nav-toggle.active span:before, #nav-toggle.active span:after {
+    top: 0;}
+    #nav-toggle.active span:before {
+    transform: rotate(45deg);}
+    #nav-toggle.active span:after {
+    transform: rotate(-45deg);}
+    
+    @media screen and (min-width: 800px) {
+    .nav-list {
+    display: block !important;
+    }
+    .brand img {
+    width:160px; height:70px; 
+    margin-top: -10px;
+    margin-left: -5px;
+    }
+    }
+    @media screen and (min-width: 1200px) {
+    .nav-list {
+    display: block !important;
+    }
+    .brand img {
+    width:160px; height:70px; 
+    margin-top: -10px;
+    margin-left: -10px;
+    }}
+    .navigation {
+    height: 70px;
+    background: white;
+    width: 100%;}
+    .nav-container {
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;}
+    .brand {
+    position: absolute;
+    padding-left: 15px;
+    float: left;
+    line-height: 70px;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    
+    margin-left: 0px;}
+    
+    .text-center p {
+    font-size: 2rem;
+    }
+     <div className="course-preview">
+         <h5><b></b></h5>
+         <a href=""><b>compagnie</b></a>
+       </div> 
+         <Link to="/reservation/Reserver">
+          <button>Retour à la réservation</button>
+        </Link>
+        A partir du <b>{new Date(date1).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })} </b>...<br/>
+        </p>
+
+
+         <header >
+          <h2>
+            <a style={{ float: 'left' }} href="#">
+              <i className="ion-plane"></i> <img src={logo} alt="Logo" />
+            </a>
+          </h2>
+          <nav>
+            <p id="main" onClick={openNav}>
+              <MenuIcon style={{ color: 'black' }} />
+            </p>
+          </nav>
+          <div id="mySidebar" className="sidebar">
+            <a style={{ float: 'right' }} className="closebtn" onClick={closeNav}>
+              <p>
+                <CloseIcon />
+              </p>
+            </a>
+       
+            <hr/>
+            
+          
+            <Button onClick={() => navigate('./Administration/Login')} >
+              <LockIcon /> Connexion
+            </Button><br/>
+            <span style={{ color: 'black' }}>
+              <CopyrightIcon /> <b style={{ color: 'orange' }}>IKABUS</b> {currentYear}
+            </span>
+            <br />
+            <a href="#">Tout droits réservés.</a>
+          </div>
+        </header>
+
+  const openNav = () => {
+    document.getElementById('mySidebar').style.width = '200px';
+    document.getElementById('main').style.marginLeft = '180px';
+  };
+
+  const closeNav = () => {
+    document.getElementById('mySidebar').style.width = '0';
+    document.getElementById('main').style.marginLeft = '-10px';
+  };
+
+
+import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { format, hoursToMilliseconds } from 'date-fns';
+import './Booking.css';
+import swal from 'sweetalert';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AjouterRoutes from '../actions/AjouterRoutes';
+import { Link } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MenuSharpIcon from '@mui/icons-material/MenuSharp';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import TablePagination from '@mui/material/TablePagination';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Axios from 'axios';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+//import format from 'date-fns/format';
+import {  useTheme } from '@mui/material/styles';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => {
+  const globalTheme = useTheme();
+
+  return {
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+      width: 150,
+
+      [globalTheme.breakpoints.down('sm')]: {
+        width: 100,
+      },
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 13,
+      padding: 4,
+
+      [globalTheme.breakpoints.down('sm')]: {
+        fontSize: 10,
+      },
+    },
+  };
+});
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&:last-child td, &:last-child th': {
+    border: 1 ,
+  },
+}));
+
+export function Booking() {
+  const [trajets, setTrajets] = useState([]);
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrajet, setSelectedTrajet] = useState(null);
+ // const { format } = require('date-fns');
+ 
+  useEffect(() => {
+    const fetchTrajets = async () => {
+      try {
+
+        const response = await fetch('http://localhost:3002/read');
+        const data = await response.json();
+        setTrajets(data);
+      } catch (error) {
+        console.log('Erreur lors de la récupération des trajets:', error);
+      }
+    };
+    fetchTrajets();
+  }, []);
+
+  const handleDeleteSelected = (trajet) => {
+    swal({
+      title: "Confirmation",
+      text: "Voulez-vous vraiment supprimer ce trajet ?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((confirmDelete) => {
+      if (confirmDelete) {
+        Axios.delete(`http://localhost:3002/delete/${trajet._id}`)
+          .then((res) => {
+            console.log(res);
+            swal("Supprimé !", "Le trajet a été supprimé.", "success");
+            window.location.reload();
+            // Effectuer d'autres actions après la suppression si nécessaire
+          })
+          .catch((err) => {
+            console.log(err);
+            swal("Erreur", "Une erreur s'est produite lors de la suppression du trajet.", "error");
+          });
+      }
+    });
+  };
+  const handleEditClick = (trajet) => {
+    setSelectedTrajet(trajet);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedTrajet(null);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const paginatedData = trajets.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'dd/MM/yyyy');
+  };
+
+  const [newtrajet, setNewTrajet] = useState({
+  
+    date1m: '',
+    departurem: '',
+    arrivalm: '',
+    hour_departurem: '',
+    hour_arrivalm: '',
+    pricem: '',
+    placesm: '',
+   
+  });
+  useEffect(() => {
+    if (selectedTrajet) {
+      setNewTrajet({
+        date1m: selectedTrajet.date1,
+        departurem: selectedTrajet.departure,
+        arrivalm: selectedTrajet.arrival,
+        hour_departurem: selectedTrajet.hour_departure,
+        hour_arrivalm: selectedTrajet.hour_arrival,
+        pricem: selectedTrajet.price,
+        placesm: selectedTrajet.places,
+      });
+    }
+  }, [selectedTrajet]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleSaveChanges = (id) => {
+    Axios.put(`http://localhost:3002/update/${selectedTrajet._id}`, newtrajet,)
+    .then((res) => {
+      handleModalClose();
+      swal('Parfait!', 'Le trajet a été mis à jour !', 'success');
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2700);
+     
+    })
+    .catch((err) => {
+     
+      swal(
+        'Erreur',
+        "Une erreur s'est produite lors de la mise à jour du trajet",
+        'error'
+      );
+    });
+  }
+  return (
+    <div className="table1">
+    <br/>
+    <p > <b>Gestion des Trajets</b> </p>
+    
+      <Link
+        to="../actions/AjouterRoutes"
+        style={{
+          textAlign: 'right',
+          background: 'orange',
+         float:"right",
+         fontSize :"12px",
+          textDecoration: 'none',
+          color: 'white',
+          padding: '5px',
+          borderRadius: '5px',
+        }}
+      >
+        <b>AJOUTER</b>
+      </Link>
+      <br />
+      <br />
+      
+      <TableContainer  component={Paper}>
+        <Table  sx={{ maxWidth: "100%" }} aria-label="customized table">
+          <TableHead>
+            <TableRow   >
+             
+              <StyledTableCell align="left">Dép.</StyledTableCell>
+              <StyledTableCell align="left">Arr.</StyledTableCell>
+             
+              
+              <StyledTableCell align="left">Prix/Pls..</StyledTableCell>
+             
+           
+              <StyledTableCell align="left">Date</StyledTableCell>
+              <StyledTableCell  align="center">Plus</StyledTableCell> </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((trajet) => {
+              const {
+                _id,
+                date1,
+                departure,
+                arrival,
+                hour_departure,
+                hour_arrival,
+                price,
+                places,
+              } = trajet;
+              const isSelected = selectedItemIds.includes(_id);
+
+              return (
+                <StyledTableRow
+                  key={_id}
+                  hover
+                  selected={isSelected}
+                >
+                  
+                  <StyledTableCell style={{background:"none", width:"50%" , textAlign:"left"}} component="th" scope="row" align="center">
+                   {departure}   <br/><b style={{ color:"red"}}>{hour_departure}</b>  
+                </StyledTableCell>
+                <StyledTableCell style={{background:"none", width:"100%" , textAlign:"left"}} component="th" scope="row" align="center">
+                     {arrival} <br/> <b style={{ color:"red"}}> {hour_arrival}</b>
+                </StyledTableCell>
+               
+                 
+              
+                 
+                <StyledTableCell align="left"> <b>{price} fcfa </b><br/>
+                {places} Plc. R.
+                
+                </StyledTableCell>
+                 
+                  <StyledTableCell align="left"><b>{formatDate(date1)}</b></StyledTableCell>
+                  <StyledTableCell  align="left">
+                  <div>
+      <Button style={{ background: 'transparent', fontSize: '18px' ,border:"none" }}
+        id="demo-positioned-button"
+        aria-controls={open ? 'demo-positioned-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      ><MenuSharpIcon style={{color: 'black', fontSize: '18px'}} />
+      </Button>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+      <IconButton>
+      <VisibilityIcon style={{ color: 'blue', fontSize: '15px' }} />
+      </IconButton>Voir<br/>
+      <IconButton onClick={() => handleEditClick(trajet)}>
+      <EditIcon  style={{ color: 'orange', fontSize: '15px' }} />
+      </IconButton>Modifier<br/>
+      <IconButton onClick={() => handleDeleteSelected(trajet)}>
+       <DeleteIcon  style={{ color: 'red', fontSize: '15px' }} />
+      </IconButton>Supprimer<br/>
+      </Menu>
+    </div>
+                 
+                </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <br/><br/>
+        <TablePagination style={{width :"100%" , background :"none",color:"black"
+        , marginTop:"14px"}}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={trajets.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+   
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifier le trajet</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedTrajet && (
+            <Form>
+            <Form.Group className="mb-3" controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+              type="date"
+              name="date1m"
+              value={newtrajet.date1m}
+              defaultValue={format(new Date(selectedTrajet.date1), 'dd/mm/yyyy')}
+              onChange={(e) =>
+                setNewTrajet({
+                  ...newtrajet,
+                  date1m: e.target.value,
+                })
+              }
+            />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Départ</Form.Label>
+              <Form.Control
+                type="text"
+                name="departurem"
+                value={newtrajet.departurem}
+                defaultValue={selectedTrajet.departure}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    departurem: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Arrivée</Form.Label>
+              <Form.Control
+                type="text"
+                name="arrivalm"
+                value={newtrajet.arrivalm}
+                defaultValue={selectedTrajet.arrival}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    arrivalm: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Heure de départ</Form.Label>
+              <Form.Control
+                type="time"
+                name="hour_departurem"
+                value={newtrajet.hour_departurem}
+                defaultValue={selectedTrajet.hour_departure}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    hour_departurem: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Heure d'arrivée</Form.Label>
+              <Form.Control
+                type="time"
+                name="hour_arrivalm"
+                value={newtrajet.hour_arrivalm}
+                defaultValue={selectedTrajet.hour_arrival}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    hour_arrivalm: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Prix</Form.Label>
+              <Form.Control
+                type="number"
+                name="pricem"
+                value={newtrajet.pricem}
+                defaultValue={selectedTrajet.price}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    pricem: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Places</Form.Label>
+              <Form.Control
+                type="number"
+                name="placesm"
+                value={newtrajet.placesm}
+                defaultValue={selectedTrajet.places}
+                onChange={(e) =>
+                  setNewTrajet({
+                    ...newtrajet,
+                    placesm: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+          </Form>
+        )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Fermer
+          </Button>
+          <Button
+            variant="warning"
+            onClick={() => handleSaveChanges(selectedTrajet._id)}
+          >
+            Enregistrer
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+export default Booking
+
+import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { format, hoursToMilliseconds } from 'date-fns';
+import './Booked.css';
+import MenuSharpIcon from '@mui/icons-material/MenuSharp';
+import Menu from '@mui/material/Menu';
+import swal from 'sweetalert';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AjouterRoutes from '../actions/AjouterRoutes';
+import { Link } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import TablePagination from '@mui/material/TablePagination';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Axios from 'axios';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 7,
+    },
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 10,
+    padding: 2,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 2,
+    },
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+
+export function Booked() {
+  const [trajets, setTrajets] = useState([]);
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrajet, setSelectedTrajet] = useState(null);
+
+
+  
+ 
+
+  useEffect(() => {
+    const fetchTrajets = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/readuser');
+        const data = await response.json();
+        setTrajets(data);
+      } catch (error) {
+        console.log('Erreur lors de la récupération des trajets:', error);
+      }
+    };
+    fetchTrajets();
+  }, []);
+
+  const handleDeleteSelected = (trajet) => {
+    swal({
+      title: "Confirmation",
+      text: "Voulez-vous vraiment supprimer ce trajet ?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((confirmDelete) => {
+      if (confirmDelete) {
+        Axios.delete(`http://localhost:3002/deleteuser/${trajet._id}`)
+          .then((res) => {
+            console.log(res);
+            swal("Supprimé !", "Le trajet a été supprimé.", "success");
+            window.location.reload();
+            // Effectuer d'autres actions après la suppression si nécessaire
+          })
+          .catch((err) => {
+            console.log(err);
+            swal("Erreur", "Une erreur s'est produite lors de la suppression du trajet.", "error");
+          });
+      }
+    });
+  };
+
+  const handleEditClick = (trajet) => {
+    setSelectedTrajet(trajet);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedTrajet(null);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const paginatedData = trajets.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const [newTrajet, setNewTrajet] = useState({});
+
+  useEffect(() => {
+    if (selectedTrajet) {
+      setNewTrajet({
+        nom1: selectedTrajet.nom,
+        prenom1: selectedTrajet.prenom,
+        compagnie1: selectedTrajet.compagnie,
+        numero_telephone1: selectedTrajet.numero_telephone,
+        email1: selectedTrajet.email,
+      });
+    }
+  }, [selectedTrajet]);
+
+  const handleSaveChanges = () => {
+    console.log(newTrajet);
+    Axios.put(`http://localhost:3002/updateuser/${selectedTrajet._id}`, newTrajet)
+      .then((res) => {
+        console.log(res);
+        handleModalClose();
+        swal('Parfait!', 'Le trajet a été mis à jour !', 'success');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        swal(
+          'Erreur',
+          "Une erreur s'est produite lors de la mise à jour du trajet",
+          'error'
+        );
+      });
+  }
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="table1">
+      <br />
+      <p > <b><u>Gestion des Réservations</u></b> </p>
+      <Link
+        to="../actions/AjouterUser"
+        style={{
+          textAlign: 'right',
+          background: 'orange',
+         float:"right",
+         fontSize :"12px",
+          textDecoration: 'none',
+          color: 'white',
+          padding: '5px',
+          borderRadius: '5px',
+        }}
+      >
+        <b>AJOUTER</b>
+      </Link>
+      <br />
+      <br />
+      <TableContainer component={Paper}>
+        <Table sx={{ maxWidth: "100%" }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+             
+              <StyledTableCell align="center">Nom</StyledTableCell>
+             <StyledTableCell>Compagnie </StyledTableCell>
+              <StyledTableCell align="center">Tel.</StyledTableCell>
+              <StyledTableCell align="center">Options</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((trajet) => {
+              const {
+                _id,
+                nom,
+                prenom,
+                compagnie,
+                password,
+                type,
+                email,
+                numero_telephone,
+              } = trajet;
+              const isSelected = selectedItemIds.includes(_id);
+
+              return (
+                <StyledTableRow
+                  key={_id}
+                  hover
+                  selected={isSelected}
+                >
+                  
+                  <StyledTableCell component="th" scope="row" align="center">
+                    {nom} {prenom}<br/>
+                  </StyledTableCell>
+                   <StyledTableCell>{compagnie}</StyledTableCell>
+                  <StyledTableCell align="center">{numero_telephone}</StyledTableCell>
+                  <StyledTableCell align="right">
+                  <div>
+                    <Button
+                      style={{ background: 'transparent', fontSize: '18px', border: 'none' }}
+                      id="demo-positioned-button"
+                      aria-controls={open ? 'demo-positioned-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={handleClick}
+                    >
+                      <MenuSharpIcon style={{ color: 'black', fontSize: '18px' }} />
+                    </Button>
+                    <Menu
+                      id="demo-positioned-menu"
+                      aria-labelledby="demo-positioned-button"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <IconButton onClick={(e) => e.stopPropagation()}>
+                        <VisibilityIcon style={{ color: 'blue' , fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                      <IconButton onClick={() => handleEditClick(trajet)}>
+                        <EditIcon style={{ color: 'orange', fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                      <IconButton onClick={() => handleDeleteSelected(trajet)}>
+                        <DeleteIcon style={{ color: 'red' , fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                    </Menu>
+                  </div>
+                </StyledTableCell>
+                                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <br/>
+        <TablePagination style={{width :"100%" , background :"gray",color:"white"
+        , margin:"auto"}}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={trajets.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifier un utilisateur</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedTrajet && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Nom</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newTrajet.nom1}
+                  name="nom1"
+                  defaultValue={selectedTrajet.nom}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      nom1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Prénom</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="prenom1"
+                  value={newTrajet.prenom1}
+                  defaultValue={selectedTrajet.prenom}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      prenom1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Compagnie</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newTrajet.compagnie1}
+                  name="compagnie1"
+                  defaultValue={selectedTrajet.compagnie}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      compagnie1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Numero de telephone</Form.Label>
+                <Form.Control
+                  type="tel"
+                  name="numero_telephone1"
+                  value={newTrajet.numero_telephone1}
+                  defaultValue={selectedTrajet.numero_telephone}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      numero_telephone1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email1"
+                  value={newTrajet.email1}
+                  defaultValue={selectedTrajet.email}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      email1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Form>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Fermer
+          </Button>
+          <Button variant="primary" onClick={handleSaveChanges}>
+            Enregistrer les modifications
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+export default Booked
+
+
+
+
+
+
+///////////////////////////
+import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import './Booked.css';
+import MenuSharpIcon from '@mui/icons-material/MenuSharp';
+import Menu from '@mui/material/Menu';
+import swal from 'sweetalert';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TablePagination from '@mui/material/TablePagination';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 7,
+    },
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 10,
+    padding: 2,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 2,
+    },
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+export function Booked() {
+  const [reservations, setReservations] = useState([]);
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/getreservation');
+        const data = await response.json();
+        setReservations(data);
+      } catch (error) {
+        console.log('Erreur lors de la récupération des réservations :', error);
+      }
+    };
+    fetchReservations();
+  }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteReservation = (reservationId) => {
+    swal({
+      title: 'Confirmation',
+      text: 'Voulez-vous vraiment supprimer cette réservation ?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((confirmDelete) => {
+      if (confirmDelete) {
+        axios.delete(`http://localhost:3002/deleteReservation/${reservationId}`)
+          .then((res) => {
+            console.log(res);
+            swal('Supprimé !', 'La réservation a été supprimée.', 'success');
+            // Effectuer d'autres actions après la suppression si nécessaire
+          })
+          .catch((err) => {
+            console.log(err);
+            swal('Erreur', 'Une erreur s\'est produite lors de la suppression de la réservation.', 'error');
+          });
+      }
+    });
+  };
+
+// ...
+
+const paginatedData = Array.isArray(reservations)
+  ? reservations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+  : [];
+
+// ...
+
+
+  return (
+    <div className="table1">
+      <br />
+      <p><b>Gestion des Réservations</b></p>
+      <Link
+        to="../actions/AjouterUser"
+        style={{
+          textAlign: 'right',
+          background: 'orange',
+          float: 'right',
+          fontSize: '12px',
+          textDecoration: 'none',
+          color: 'white',
+          padding: '5px',
+          borderRadius: '5px',
+        }}
+      >
+        <b>AJOUTER</b>
+      </Link>
+      <br />
+      <br />
+      <TableContainer component={Paper}>
+        <Table sx={{ maxWidth: "100%" }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Nom</StyledTableCell>
+              <StyledTableCell align="center">Prénom</StyledTableCell>
+              <StyledTableCell align="center">Nombre de personnes</StyledTableCell>
+              <StyledTableCell align="center">Prix</StyledTableCell>
+             <StyledTableCell align="center">Options</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((reservation) => {
+              const {
+                _id,
+                nom,
+                prenom,
+                telephone,
+                nombre_personnes,
+                prix,
+                compagnie,
+              } = reservation;
+              const isSelected = selectedItemIds.includes(_id);
+
+              return (
+                <StyledTableRow key={_id} hover selected={isSelected}>
+                  <StyledTableCell align="center">{nom}</StyledTableCell>
+                  <StyledTableCell align="center">{prenom}</StyledTableCell>
+                  <StyledTableCell align="center">{telephone}</StyledTableCell>
+                  <StyledTableCell align="center">{nombre_personnes}</StyledTableCell>
+                  <StyledTableCell align="center">{prix}</StyledTableCell>
+                  <StyledTableCell align="center">{compagnie}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <IconButton onClick={handleMenuOpen}>
+                      <MenuSharpIcon style={{ color: 'black', fontSize: '18px' }} />
+                    </IconButton>
+                    <Menu
+                      id="demo-positioned-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <IconButton onClick={() => handleDeleteReservation(_id)}>
+                        <DeleteIcon style={{ color: 'red', fontSize: '15px' }} />
+                      </IconButton>
+                    </Menu>
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <br />
+        <TablePagination
+          style={{ width: '100%', background: 'none', color: 'black', margin: 'auto' }}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={reservations.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+    </div>
+  );
+}
+
+export default Booked;
+
+
+
+
+
+//////////////////
+import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { format, hoursToMilliseconds } from 'date-fns';
+import './Booked.css';
+import MenuSharpIcon from '@mui/icons-material/MenuSharp';
+import Menu from '@mui/material/Menu';
+import swal from 'sweetalert';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AjouterRoutes from '../actions/AjouterRoutes';
+import { Link } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import TablePagination from '@mui/material/TablePagination';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Axios from 'axios';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 7,
+    },
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 10,
+    padding: 2,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 10,
+      padding: 2,
+    },
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+
+export function Booked() {
+  const [trajets, setTrajets] = useState([]);
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrajet, setSelectedTrajet] = useState(null);
+
+
+  
+ 
+
+  useEffect(() => {
+    const fetchTrajets = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/getreservation');
+        const data = await response.json();
+        setTrajets(data);
+      } catch (error) {
+        console.log('Erreur lors de la récupération des trajets:', error);
+      }
+    };
+    fetchTrajets();
+  }, []);
+
+  const handleDeleteSelected = (trajet) => {
+    swal({
+      title: "Confirmation",
+      text: "Voulez-vous vraiment supprimer ce trajet ?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((confirmDelete) => {
+      if (confirmDelete) {
+        Axios.delete(`http://localhost:3002/deleteuser/${trajet._id}`)
+          .then((res) => {
+            console.log(res);
+            swal("Supprimé !", "Le trajet a été supprimé.", "success");
+            window.location.reload();
+            // Effectuer d'autres actions après la suppression si nécessaire
+          })
+          .catch((err) => {
+            console.log(err);
+            swal("Erreur", "Une erreur s'est produite lors de la suppression du trajet.", "error");
+          });
+      }
+    });
+  };
+
+  const handleEditClick = (trajet) => {
+    setSelectedTrajet(trajet);
+    setShowModal(true);
+    setAnchorEl(null);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedTrajet(null);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const paginatedData = trajets.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const [newTrajet, setNewTrajet] = useState({});
+
+  useEffect(() => {
+    if (selectedTrajet) {
+      setNewTrajet({
+        nom1: selectedTrajet.nom,
+        prenom1: selectedTrajet.prenom,
+        compagnie1: selectedTrajet.compagnie,
+        numero_telephone1: selectedTrajet.numero_telephone,
+        email1: selectedTrajet.email,
+      });
+    }
+  }, [selectedTrajet]);
+
+  const handleSaveChanges = () => {
+    console.log(newTrajet);
+    Axios.put(`http://localhost:3002/updateuser/${selectedTrajet._id}`, newTrajet)
+      .then((res) => {
+        console.log(res);
+        handleModalClose();
+        swal('Parfait!', 'Le trajet a été mis à jour !', 'success');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        swal(
+          'Erreur',
+          "Une erreur s'est produite lors de la mise à jour du trajet",
+          'error'
+        );
+      });
+  }
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="table1">
+      
+      <h3> Gestion des Réservations </h3>
+      <Link
+        to="../actions/AjouterUser"
+        style={{
+          textAlign: 'right',
+          background: 'orange',
+         float:"right",
+         fontSize :"12px",
+          textDecoration: 'none',
+          color: 'white',
+          padding: '5px',
+          borderRadius: '5px',
+        }}
+      >
+        <b>AJOUTER</b>
+      </Link>
+      <br />
+      <br />
+      <TableContainer component={Paper}>
+        <Table sx={{ maxWidth: "100%" }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+             
+              <StyledTableCell align="center">Nom</StyledTableCell>
+             <StyledTableCell>Compagnie </StyledTableCell>
+              <StyledTableCell align="center">Tel.</StyledTableCell>
+              <StyledTableCell align="center">Options</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((trajet) => {
+              const {
+                _id,
+                nom,
+                prenom,
+                compagnie,
+                password,
+                type,
+                email,
+                numero_telephone,
+              } = trajet;
+              const isSelected = selectedItemIds.includes(_id);
+
+              return (
+                <StyledTableRow
+                  key={_id}
+                  hover
+                  selected={isSelected}
+                >
+                  
+                  <StyledTableCell component="th" scope="row" align="center">
+                    {nom} {prenom}<br/>
+                  </StyledTableCell>
+                   <StyledTableCell>{compagnie}</StyledTableCell>
+                  <StyledTableCell align="center">{numero_telephone}</StyledTableCell>
+                  <StyledTableCell align="right">
+                  <div>
+                    <Button
+                      style={{ background: 'transparent', fontSize: '18px', border: 'none' }}
+                      id="demo-positioned-button"
+                      aria-controls={open ? 'demo-positioned-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={handleClick}
+                    >
+                    <MoreVertRoundedIcon style={{color: 'black', fontSize: '18px'}} />
+                    </Button>
+                    <Menu
+                      id="demo-positioned-menu"
+                      aria-labelledby="demo-positioned-button"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <IconButton onClick={(e) => e.stopPropagation()}>
+                        <VisibilityIcon style={{ color: 'blue' , fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                      <IconButton onClick={() => handleEditClick(trajet)}>
+                        <EditIcon style={{ color: 'orange', fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                      <IconButton onClick={() => handleDeleteSelected(trajet)}>
+                        <DeleteIcon style={{ color: 'red' , fontSize:'15px' }} />
+                      </IconButton>
+                      <br />
+                    </Menu>
+                  </div>
+                </StyledTableCell>
+                                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        
+        <TablePagination style={{width :"100%" , background :"none",color:"black"
+        , margin:"auto"}}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={trajets.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifier un utilisateur</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedTrajet && (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Nom</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newTrajet.nom1}
+                  name="nom1"
+                  defaultValue={selectedTrajet.nom}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      nom1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Prénom</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="prenom1"
+                  value={newTrajet.prenom1}
+                  defaultValue={selectedTrajet.prenom}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      prenom1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Compagnie</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newTrajet.compagnie1}
+                  name="compagnie1"
+                  defaultValue={selectedTrajet.compagnie}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      compagnie1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Numero de telephone</Form.Label>
+                <Form.Control
+                  type="tel"
+                  name="numero_telephone1"
+                  value={newTrajet.numero_telephone1}
+                  defaultValue={selectedTrajet.numero_telephone}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      numero_telephone1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email1"
+                  value={newTrajet.email1}
+                  defaultValue={selectedTrajet.email}
+                  onChange={(e) =>
+                    setNewTrajet({
+                      ...newTrajet,
+                      email1: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Form>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Fermer
+          </Button>
+          <Button variant="warning" onClick={handleSaveChanges}>
+            Enregistrer 
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+export default Booked
+
+
+
+///////////

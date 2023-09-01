@@ -1,0 +1,83 @@
+
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.admin-container{
+max-width: 100%;
+width: 100%;
+height: 100%;
+}
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  padding: auto;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0%;
+}
+body {
+
+
+height: 100%;
+max-width: 100%;
+
+width: 100%;
+margin-top: 0%;padding: 0px;
+
+}
+.gestion{
+
+align-items: center;
+justify-content: center;
+position: relative;
+
+height: auto;
+
+
+
+
+}
+
+
+@media (max-width:500px){
+  .gestion{
+      width: 95%;
+      margin-left: 2.5%;
+      margin-right:2.5% ;
+  }
+}
+@media (min-width:501px){
+  .gestion{
+      width: 85%;
+      margin-left: 7.5%;
+      margin-right:7.5% ;
+  }
+}
+@media (min-width:801px){
+  .gestion{
+      width: 70%;
+      margin-left: 15%;
+      margin-right:15% ;
+  }
+}
+@media (min-width:1001px){
+  .gestion{
+    width: 60%;
+      margin-left: 20%;
+      margin-right:20% ;
+  }
+}
+@media (min-width:1201px){
+  .gestion{
+    width: 55%;
+    margin-left: 22.5%;
+    margin-right:22.5% ;
+  }
+}
+

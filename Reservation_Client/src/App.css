@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  padding: auto;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0%;
+
+}
+body {
+ 
+
+
+
+
+max-width: 100%;
+width: 100%;
+
+padding: auto;
+
+}
+
+
+
+@keyframes glowing {
+  0% { box-shadow: 0 0 -10px #c4a300; }
+  40% { box-shadow: 5px 5px 20px #c4a300; }
+  60% { box-shadow: 0 0 20px #ff8002; }
+  100% { box-shadow: 0 0 -10px #ff0000; }
+}
+
+.button-glow {
+  animation: glowing 2500ms infinite;
+}
+
+
+
+.button-17{
+  margin-top: 100px;
+  text-align: center;
+  align-items: center;
+  z-index: 100;
+
+  appearance: none;
+  background-color: orange;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Lato",Roboto,Arial,sans-serif;
+  
+  font-weight: 500;
+ 
+  justify-content: center;
+  letter-spacing: .25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform,opacity;
+  z-index: 4;
+}
+.button-17:hover {
+  background: orange;
+  color: white;
+}
+.button-17:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+.button-17:focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+.button-17:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+}
+.button-17:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
+}
+.button-17:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+}
+.button-17:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
+}
+.button-17:disabled {
+  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+}
+.container1 img {
+width: 140px;
+height: 60px;
+margin-top: 10px;
+text-align: left;
+margin-left: 10px;
+}
+.container1 {
+/*margin-bottom: 0px;
+margin-top: 0px;
+border-radius: 0%;
+width: 100%;
+background-image: url("./images/bus.png");
+background-attachment: fixed;
+background-size:cover;
+background-repeat: no-repeat;*/
+height: 100vh;
+image-rendering: pixelated;
+backdrop-filter: blur(14px);
+padding-top: 100px;
+justify-content: center;
+align-items: center;
+text-align: center;
+
+}
+
+.wrapper{
+  
+  height:auto;
+margin-bottom: 0px;
+margin-top: 0px;
+border-radius: 0%;
+width: 100%;
+background-image: url("./images/bus.png");
+background-attachment: fixed;
+background-size:cover;
+background-repeat: no-repeat;
+}
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.5rem;
+}
+@media  (max-width:500px) {
+.cover h3 {
+  color: rgb(255, 255, 255);
+  font-size: 25px;
+  }
+  .cover span {
+    color: orange;
+    font-size: 1.5rem;
+    }
+    .button-17{
+      font-size: 22px;
+      height: 48px;
+      padding: 2px 20px;
+    }
+}
+@media  (min-width:501px) {
+  .cover h3 {
+    color: rgb(255, 255, 255);
+    font-size: 36px;
+    }
+    .cover span {
+    color: orange;
+    font-size: 2rem;
+    }
+    .button-17{
+      font-size: 30px;
+      height: 52px;
+      padding: 2px 24px;
+    }
+  }
+  @media  (min-width:801px) {
+    .cover h3 {
+      color: rgb(255, 255, 255);
+      font-size: 64px;
+      }
+      .cover span {
+        color: orange;
+        font-size: 2.5rem;
+        }
+        .button-17{
+          font-size: 37px;
+          height: 56px;
+          padding: 2px 18px;
+        }
+    }
+    @media  (min-width:1001px) {
+      .cover h3 {
+        color: white;
+        font-size: 90px;
+        }
+        .cover span {
+          color: orange;
+          font-size: 3rem;
+          }
+          .button-17{
+            font-size: 44px;
+            height: 60px;
+            padding: 6px 20px;
+          }
+      }
+.cover  {
+  
+    margin-top: 10px;
+  height:auto;
+  width: 100%;
+ /* background-color: rgb(141, 141, 163);*/
+  padding: 10px 10px;
+  display: -webkit-box;
+  display: flex;
+
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+@media  (max-width:500px) {
+  .cover p {
+    color : white;
+    font-size: 22px;
+    text-align: center;
+    
+      }
+}
+.cover p {
+color : white;
+font-size: 22px;
+text-align: center;
+
+}

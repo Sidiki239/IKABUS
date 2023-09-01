@@ -1,0 +1,550 @@
+
+.load{
+padding-left: 45%;
+padding-right: 45%;
+height:900px;
+padding-top: 350px;
+width: 100%;
+margin: 0 auto;
+background-image: url("../images/bus.png");
+justify-content: center;
+text-align: center;
+align-items: center;
+justify-items: center;
+
+
+}
+
+.wrapper1{
+  height: 900px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  border-radius: 0%;
+  width: 100%;
+  background-image: url("../images/bus.png");
+  background-attachment: fixed;
+  background-size:cover;
+  background-repeat: no-repeat;
+
+  
+  }
+
+
+.button2 {
+    background: rgb(239, 133, 4);
+    border: 0;
+    border-radius: 7px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 15px;
+    padding: 5px 5px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .button3 {
+        background: grey;
+        border: 0;
+        border-radius: 7px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+        color: black;
+        font-size: 15px;
+        padding: 5px 5px;
+        text-align: left;
+        position: absolute;
+        bottom: 5px;
+        right: 100px;
+        cursor:pointer;
+        letter-spacing: 1px;
+        }
+
+  .w-45 {
+    width: 90%;
+  }
+  .form-inline {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+
+  .input-left {
+    margin-right: 10px;
+  }
+  
+  .input-right {
+    margin-left: 10px;
+  }
+  
+
+@media(max-width:500px){
+.courses-container{
+width: 95%;
+word-break:break-word;
+margin-left: auto;
+margin-right: auto;
+margin-top: 1%;
+padding-left: auto;
+padding: 0px;
+}
+.course {
+background-color: rgb(255, 255, 255);
+border-radius: 7px;
+box-shadow: rgba(25, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+display: flex;
+margin-top: 15px;
+border:.5px solid rgb(255, 255, 255);
+overflow: hidden;
+width: auto;
+word-break:break-word;
+}
+
+.course-info {
+padding: 3px 3px 3px 7px;
+position: relative;
+width: 100%;
+word-break:break-word;
+}
+.course-info h2{
+color :rgb(0, 0, 0);
+font-size: 10px;
+
+}
+.course-info h6{
+    color :rgb(0, 0, 0);
+    font-size: 10px;
+    
+    }
+.progress-container {
+position: absolute;
+top: -1px;
+right: 7px;
+margin-right:0;
+word-break:break-word;
+text-align: right;
+width: auto;
+word-break:break-word;
+}
+.progress-text {
+font-size: 10px;
+opacity: 1;
+color:red;}
+
+.button1 {
+background: rgb(239, 133, 4);
+border: 0;
+border-radius: 12px;
+box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+color: #fff;
+font-size: 8px;
+padding: 5px 5px;
+position: absolute;
+bottom: 7px;
+right: 5px;
+cursor:pointer;
+letter-spacing: 1px;
+}
+.well {
+  width: 90%;
+  position: relative;
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+
+  z-index: 2;
+  border-radius: 7px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+
+.well p {
+  top: 12px;
+  font-size: 10px;
+  color: rgb(0, 0, 0);
+}
+
+
+    .pagination{
+      justify-content: center;
+      color: rgb(242, 0, 0);
+      margin: auto;
+      font-size: 2px;
+     
+      }
+  }
+
+/*RESPONSIVE TABLET*/
+
+    @media(min-width:501px){
+    .courses-container{
+    width: 80%;
+    word-break:break-word;
+    margin: auto;
+    padding-left: auto;
+    padding: 5px;
+    }
+    .course {
+    background-color: rgb(255, 255, 255);
+    border-radius: 7px;
+    box-shadow: rgba(25, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+    display: flex;
+    margin-top: 25px;
+    border:.5px solid rgb(255, 255, 255);
+    overflow: hidden;
+    width: auto;
+    word-break:break-word;
+    }
+   
+   
+
+    .course-info {
+    padding: 10px 3px 5px 12px;
+    position: relative;
+    width: 100%;
+    
+    word-break:break-word;
+    }
+    .course-info h2{
+    color :rgb(0, 0, 0);
+    font-size: 12px;
+    
+    }
+    .course-info h6{
+        font-size: 12px;
+        }
+    .progress-container {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    margin-right:0;
+    word-break:break-word;
+    text-align: right;
+    width: auto;
+    word-break:break-word;
+    }
+    .progress-text {
+    font-size: 12px;
+    opacity: 1;
+    letter-spacing: .2px;
+    color:red;}
+
+
+    .button1 {
+    background: rgb(239, 133, 4);
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 11px;
+    padding: 5px 5px;
+    position: absolute;
+    bottom: 12px;
+    right: 5px;
+    cursor:pointer;
+    letter-spacing: 1px;
+    }
+    .well{
+    width:80%;
+    background-color: white;
+   margin: auto;
+    border-radius:12px;
+    margin-top:25px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well p{font-size: 13px;}
+    .pagination{
+    justify-content: center;
+      color: white;
+      margin: auto;
+      font-size: 10px;
+      
+      }
+  }
+
+
+/* FIN RESPONSIVE TABLET*/
+
+    @media(min-width:750.1px){
+    body
+    {max-width: 100%;}
+    .courses-container{
+        width: 85%;
+        word-break:break-word;
+        margin: auto;
+        margin-top: 10%;
+        padding-left: auto;
+        padding: 5px;
+        }
+        .course {
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        box-shadow: rgba(25, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+        box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+        display: flex;
+        margin-top: 20px;
+        border:.5px solid black;
+        overflow: hidden;
+        width: auto;
+        word-break:break-word;
+        }
+       
+        .course-info {
+        padding: 10px 3px 5px 12px;
+        position: relative;
+        width: 100%;
+        
+        word-break:break-word;
+        }
+        .course-info h2{
+        color :rgb(0, 0, 0);
+        font-size: 16px;
+        }
+        .course-info h6{
+        font-size: 15px;
+        }
+        .progress-container {
+        position: absolute;
+        top: 5px;
+        right: 7px;
+        margin-right:0;
+        word-break:break-word;
+        text-align: right;
+        width: auto;
+        word-break:break-word;
+        }
+        .progress-text {
+        font-size: 16px;
+        opacity: 1;
+        letter-spacing: .4px;
+        color:red;}
+    
+    
+        .button1 {
+        background: rgb(239, 133, 4);
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-size: 12px;
+        padding: 5px 5px;
+        position: absolute;
+        bottom: 9px;
+        right: 5px;
+        cursor:pointer;
+        letter-spacing: 1px;
+        }
+        .well{
+    width:95%;
+    position: fixed;
+    margin-left:2.5%;
+    margin-right:2.5%;
+    background-color: white;
+    border-radius:12px;
+    margin-top:15px;
+    margin-bottom:px;
+    z-index: 9999;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well p{ font-size: 16px;}
+    .pagination{
+    
+      justify-content: center;
+     
+      color: white;
+      margin: auto;
+      font-size: 13px;
+    
+      }
+  }
+
+    /* RESPONSIVE PC  */
+    @media(min-width:990px){
+    body
+    { max-width: 100%; }
+    .courses-container{
+        width: 90%;
+        word-break:break-word;
+        margin: auto;
+        padding-left: auto;
+        padding: 5px;
+        }
+        .course {
+        background-color: rgb(255, 255, 255);
+        border-radius: 7px;
+        box-shadow: rgba(25, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+        box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+        display: flex;
+        margin-top: 20px;
+        border:.5px solid black;
+        overflow: hidden;
+        width: auto;
+        word-break:break-word;
+        }
+      
+       
+    
+        .course-info {
+        padding: 10px 3px 5px 12px;
+        position: relative;
+        width: 100%;
+        word-break:break-word;
+        }
+        .course-info h2{
+        color :rgb(0, 0, 0);
+        font-size: 20px;
+        }
+        .course-info h6{
+            font-size: 18px;
+            }
+        .progress-container {
+        position: absolute;
+        top: 5px;
+        right: 7px;
+        margin-right:0;
+        word-break:break-word;
+        text-align: right;
+        width: auto;
+        word-break:break-word;
+        }
+        .progress-text {
+        font-size: 19px;
+        opacity: 1;
+        letter-spacing: .6px;
+        color:red;}
+    
+    
+        .button1 {
+        background: rgb(239, 133, 4);
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-size: 17px;
+        padding: 5px 5px;
+        position: absolute;
+        bottom: 9px;
+        right: 5px;
+        cursor:pointer;
+        letter-spacing: 1px;
+        }
+       
+    .well{
+    width:90%;
+    margin: auto;
+    background-color: white;
+    border-radius:12px;
+    margin-top:15px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well p{font-size: 20px;}
+    .pagination{
+      justify-content: center;
+      color: white;
+      margin: auto;
+      font-size: 16px;
+   
+      }
+  }
+
+
+    @media(min-width:1200px){
+    body
+    {max-width: 100%; }
+    .courses-container{
+        width: 55%;
+        word-break:break-word;
+        margin: auto;
+        margin-top: 10%;
+        padding-left: auto;
+        padding: 5px;
+      
+        }
+        .course {
+        background-color: rgb(255, 255, 255);
+        border-radius: 7px;
+        box-shadow: rgba(25, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+        box-shadow: 12px 15px   18px rgba(5 5 0, 0.2);
+        display: flex;
+        margin-top: 20px;
+        border:.5px solid rgb(255, 255, 255);
+        overflow: hidden;
+        width: auto;
+        word-break:break-word;
+        }
+      
+        .course-info {
+        padding: 10px 3px 5px 12px;
+        position: relative;
+        width: 100%;
+        
+        word-break:break-word;
+        }
+        .course-info h2{
+        color :rgb(0, 0, 0);
+        font-size: 18px;
+        
+        }
+        .course-info h6{
+            color :rgb(0, 0, 0);
+            font-size: 18px;
+            
+            }
+        
+        .progress-container {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        margin-right:0;
+        word-break:break-word;
+        text-align: right;
+        width: auto;
+        word-break:break-word;
+        }
+        .progress-text {
+        font-size: 16px;
+        opacity: 1;
+        letter-spacing: 1.4px;
+        color:red;}
+    
+    
+        .button1 {
+        background: rgb(239, 133, 4);
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        font-size: 16px;
+        padding: 5px 5px;
+        position: absolute;
+        bottom: 8px;
+        right: 5px;
+        cursor:pointer;
+        letter-spacing: 1px;
+        }
+        .well{
+        background-color: white;
+    width:55%;
+    margin-left: 22.5%;
+    margin-right: 22.5%;
+    justify-content: center;
+    align-items: center;
+   
+    text-align: center;
+    margin-top:40px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+    .well p{ font-size: 24px;}
+    .pagination{
+    justify-content: center;
+      color: white;
+      margin: auto;
+      font-size: 19px;
+   
+      }
+}
+
